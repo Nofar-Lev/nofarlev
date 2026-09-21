@@ -1,0 +1,135 @@
+<!doctype html>
+<!-- made with <3 by Nofar Lev -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nofar Lev</title>
+<meta name="description" content="Nofar Lev: computer science student at the Technion, working with language models and human-AI interaction.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a1f44">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%20role%3D%22img%22%20aria-label%3D%22Nofar%20Lev%22%3E%3Ctitle%3ENofar%20Lev%3C/title%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20rx%3D%2246%22%20fill%3D%22%230a1f44%22/%3E%3Cg%20transform%3D%22translate%2855.63%20165.83%29%22%3E%3Cpath%20id%3D%22lambda%22%20fill%3D%22%2322d3ee%22%20d%3D%22M68.78%202.28Q60.99%202.28%2057.67%20-3.99Q54.34%20-10.26%2054.34%20-21.09Q54.34%20-28.88%2055.01%20-35.91Q55.67%20-42.94%2056.62%20-51.3Q57.57%20-59.66%2058.23%20-71.06Q58.9%20-82.46%2058.9%20-99.18Q58.9%20-108.68%2056.05%20-114Q53.2%20-119.32%2047.12%20-119.32Q42.37%20-119.32%2038.86%20-117.8Q35.34%20-116.28%2031.54%20-112.86L27.55%20-115.71Q30.59%20-121.03%2034.39%20-125.11Q38.19%20-129.2%2043.03%20-131.57Q47.88%20-133.95%2053.77%20-133.95Q60.61%20-133.95%2063.65%20-130.06Q66.69%20-126.16%2067.35%20-119.89Q68.02%20-113.62%2068.02%20-106.02Q68.02%20-94.43%2067.45%20-83.41Q66.88%20-72.39%2066.22%20-61.75Q65.55%20-51.11%2065.55%20-40.66Q65.55%20-28.69%2068.12%20-20.8Q70.68%20-12.92%2076.76%20-12.92Q80.56%20-12.92%2083.79%20-14.34Q87.02%20-15.77%2090.63%20-19.57L93.86%20-16.53Q91.01%20-11.21%2086.93%20-6.94Q82.84%20-2.66%2078.19%20-0.19Q73.53%202.28%2068.78%202.28ZM13.87%200H-5.13V-3.04Q4.94%20-16.72%2016.34%20-32.11Q27.74%20-47.5%2039.14%20-62.8Q50.54%20-78.09%2060.42%20-91.39L61.56%20-71.06H57.38Q55.67%20-68.59%2051.68%20-62.42Q47.69%20-56.24%2042.66%20-47.98Q37.62%20-39.71%2032.2%20-30.78Q26.79%20-21.85%2021.95%20-13.78Q17.1%20-5.7%2013.87%200Z%22/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..600&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1f44;      /* ground */
+  --ice: #f4f8ff;       /* main text, logo letters */
+  --mist: #a9bbd6;      /* secondary text */
+  --line: #1d3563;      /* rules */
+  --deep: #071834;      /* the darker band */
+  --accent: #22d3ee;    /* the lambda. Official: electric cyan. Never purple. */
+  --soft: Fredoka, "Trebuchet MS", "Segoe UI", sans-serif;
+  --crisp: "STIX Two Text", "Iowan Old Style", Georgia, serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--navy); color: var(--ice); font: 400 1.1875rem/1.65 var(--crisp); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.wrap { width: min(100% - 3rem, 58rem); margin-inline: auto; }
+
+.hero { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: 4rem; }
+.logo { display: block; width: min(100%, 35rem); height: auto; overflow: visible; }
+.logo .letters { fill: var(--ice); }
+.logo .lambda { fill: var(--accent); cursor: pointer; transition: fill 0.25s ease; }
+.logo .lambda:focus { outline: none; }
+.logo .lambda:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.name { margin: 2.25rem 0 0; font: 500 1.5rem/1.2 var(--soft); }
+.line { margin: 0.5rem 0 0; color: var(--mist); min-height: 1.65em; }
+.cursor { display: inline-block; width: 0.5em; height: 1.05em; margin-left: 0.15em; vertical-align: -0.16em; border-radius: 2px; background: var(--accent); animation: lubdub 1s linear infinite; }
+/* one beat per second, 60 bpm: two quick dips (lub, dub), then rest */
+@keyframes lubdub { 0%, 16%, 34%, 100% { opacity: 1; } 8%, 25% { opacity: 0.12; } }
+.hint { margin: 3.5rem 0 0; font: 400 0.9375rem/1.4 var(--soft); color: var(--mist); }
+
+.beat { display: flex; align-items: center; color: var(--accent); }
+.beat::before { content: ""; flex: 0 0 max(1.5rem, calc((100% - 58rem) / 2 + 11rem)); border-top: 2px solid var(--line); }
+.beat::after { content: ""; flex: 1; border-top: 2px solid var(--line); }
+.beat svg { flex: none; width: 9rem; height: auto; overflow: visible; }
+section { padding-block: 4.5rem; }
+section.deep { background: var(--deep); }
+section > .wrap { display: grid; grid-template-columns: 1fr; gap: 1.25rem 3rem; }
+@media (min-width: 46rem) { section > .wrap { grid-template-columns: 11rem minmax(0, 1fr); } }
+.lead { font: 500 clamp(1.6rem, 1.1rem + 2vw, 2.4rem)/1.2 var(--soft); margin: 0 0 1.5rem; max-width: 20em; text-wrap: balance; }
+.grid2 { display: grid; grid-template-columns: 1fr; gap: 3rem 3.5rem; }
+@media (min-width: 38rem) { .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.glyph { height: 3.75rem; display: flex; align-items: center; margin-bottom: 1rem; color: var(--accent); }
+.glyph svg { height: 100%; width: auto; overflow: visible; }
+.glyph .logic { font: 500 3.4rem/1 var(--soft); letter-spacing: 0.06em; }
+.glyph .logic span { display: inline-block; }
+.glyph .logic .a { transform: rotate(180deg); }
+.glyph .logic .e { transform: scaleX(-1); }
+h3 { margin: 0 0 0.35rem; font: 500 1.375rem/1.25 var(--soft); }
+.grid2 p { color: var(--mist); }
+.big-link { font: 500 clamp(1.5rem, 1rem + 2vw, 2.1rem)/1.25 var(--soft); }
+h2 { margin: 0; font: 500 1.375rem/1.3 var(--soft); color: var(--accent); }
+section p { margin: 0 0 1.1em; max-width: 38em; }
+section p:last-child { margin-bottom: 0; }
+dl { margin: 0; display: grid; gap: 2rem; max-width: 38em; }
+dt { font: 500 1.375rem/1.25 var(--soft); }
+dd { margin: 0.3rem 0 0; color: var(--mist); }
+.todo { color: var(--mist); font-style: italic; }
+ul.plain { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cursor { animation: none; }
+  .logo .lambda { transition: none; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero wrap">
+    <svg class="logo" viewBox="7 -92 432.7 106" role="img" aria-labelledby="logo-title">
+      <title id="logo-title">Nofar Lev</title>
+      <path class="letters" d="M10.9 0.9Q8.6 0.9 7.5 0.2Q6.4 -0.5 6.1 -1.7Q5.8 -2.9 5.8 -4.4V-43Q5.8 -44.4 6.1 -45.5Q6.4 -46.6 7.55 -47.2Q8.7 -47.8 11 -47.8Q13 -47.8 14 -47.35Q15 -46.9 15.35 -46.15Q15.7 -45.4 15.8 -44.6Q15.9 -43.8 15.9 -43.3L15.6 -39.3Q16.4 -41 17.9 -42.5Q19.4 -44 21.35 -45.25Q23.3 -46.5 25.65 -47.25Q28 -48 30.6 -48Q35.2 -48 38.9 -46.35Q42.6 -44.7 45.25 -41.7Q47.9 -38.7 49.3 -34.5Q50.7 -30.3 50.7 -25.1V-4.3Q50.7 -2.8 50.4 -1.6Q50.1 -0.4 49.05 0.25Q48 0.9 45.6 0.9Q43.2 0.9 42.05 0.2Q40.9 -0.5 40.6 -1.7Q40.3 -2.9 40.3 -4.4V-25.2Q40.3 -29.1 39 -31.95Q37.7 -34.8 35.1 -36.35Q32.5 -37.9 28.6 -37.9Q24.8 -37.9 22 -36.35Q19.2 -34.8 17.65 -31.95Q16.1 -29.1 16.1 -25.2V-4.3Q16.1 -2.8 15.8 -1.6Q15.5 -0.4 14.4 0.25Q13.3 0.9 10.9 0.9Z M84.1 1.6Q79.2 1.6 74.7 -0.3Q70.2 -2.2 66.65 -5.55Q63.1 -8.9 61 -13.45Q58.9 -18 58.9 -23.4Q58.9 -28.6 60.85 -33.15Q62.8 -37.7 66.25 -41.15Q69.7 -44.6 74.2 -46.55Q78.7 -48.5 83.9 -48.5Q90.9 -48.5 96.5 -45.2Q102.1 -41.9 105.45 -36.25Q108.8 -30.6 108.8 -23.5Q108.8 -17.9 106.75 -13.3Q104.7 -8.7 101.2 -5.35Q97.7 -2 93.25 -0.2Q88.8 1.6 84.1 1.6ZM83.9 -8.6Q87.6 -8.6 90.95 -10.5Q94.3 -12.4 96.35 -15.8Q98.4 -19.2 98.4 -23.6Q98.4 -28 96.55 -31.3Q94.7 -34.6 91.35 -36.4Q88 -38.2 83.8 -38.2Q79.7 -38.2 76.45 -36.3Q73.2 -34.4 71.25 -31.1Q69.3 -27.8 69.3 -23.5Q69.3 -19 71.35 -15.65Q73.4 -12.3 76.75 -10.45Q80.1 -8.6 83.9 -8.6Z M126.3 1.1Q124 1.1 122.95 0.4Q121.9 -0.3 121.55 -1.55Q121.2 -2.8 121.2 -4.3V-53.7Q121.2 -57.6 122.15 -60.65Q123.1 -63.7 125.25 -65.9Q127.4 -68.1 130.8 -69.25Q134.2 -70.4 139.1 -70.4Q140.6 -70.4 141.8 -70.1Q143 -69.8 143.7 -68.75Q144.4 -67.7 144.4 -65.3Q144.4 -63 143.65 -61.85Q142.9 -60.7 141.75 -60.45Q140.6 -60.2 139 -60.2Q137 -60.2 135.55 -60Q134.1 -59.8 133.25 -59.2Q132.4 -58.6 132 -57.35Q131.6 -56.1 131.6 -53.9V-4.1Q131.6 -2.6 131.3 -1.45Q131 -0.3 129.85 0.4Q128.7 1.1 126.3 1.1ZM116.6 -46.8 126.6 -46.7 140.5 -47Q142 -47 143.15 -46.7Q144.3 -46.4 145 -45.3Q145.7 -44.2 145.7 -41.9Q145.7 -39.6 145.05 -38.5Q144.4 -37.4 143.25 -37.05Q142.1 -36.7 140.5 -36.7L127 -36.9L116.4 -36.8Q114.1 -36.9 113.25 -38.05Q112.4 -39.2 112.4 -41.9Q112.4 -44.4 113.4 -45.6Q114.4 -46.8 116.6 -46.8Z M192 0.9Q189.4 0.9 188.2 -0.1Q187 -1.1 186.9 -3L187.5 -7.2Q186.6 -5.8 184.6 -3.9Q182.6 -2 179.35 -0.55Q176.1 0.9 171.5 0.9Q166.7 0.9 162.55 -1Q158.4 -2.9 155.25 -6.3Q152.1 -9.7 150.3 -14.15Q148.5 -18.6 148.5 -23.6Q148.5 -28.5 150.3 -32.85Q152.1 -37.2 155.3 -40.6Q158.5 -44 162.65 -45.9Q166.8 -47.8 171.5 -47.8Q175.7 -47.8 178.65 -46.7Q181.6 -45.6 183.75 -43.8Q185.9 -42 187.4 -40L187 -43.5Q186.9 -45.7 188.15 -46.75Q189.4 -47.8 192.1 -47.8Q194.4 -47.8 195.4 -47.1Q196.4 -46.4 196.75 -45.1Q197.1 -43.8 197.1 -42.1V-4.6Q197.1 -3 196.75 -1.75Q196.4 -0.5 195.35 0.2Q194.3 0.9 192 0.9ZM173.1 -9.1Q176.8 -9.1 179.8 -11Q182.8 -12.9 184.6 -16.15Q186.4 -19.4 186.4 -23.5Q186.4 -27.8 184.55 -31Q182.7 -34.2 179.65 -36.05Q176.6 -37.9 172.9 -37.9Q168.7 -37.9 165.5 -36Q162.3 -34.1 160.5 -30.8Q158.7 -27.5 158.7 -23.3Q158.7 -19.3 160.55 -16.05Q162.4 -12.8 165.65 -10.95Q168.9 -9.1 173.1 -9.1Z M213.1 1Q210.8 1 209.7 0.3Q208.6 -0.4 208.3 -1.65Q208 -2.9 208 -4.4V-42.7Q208 -44.3 208.3 -45.45Q208.6 -46.6 209.7 -47.2Q210.8 -47.8 213.2 -47.8Q215.5 -47.8 216.6 -47.25Q217.7 -46.7 218 -45.75Q218.3 -44.8 218.3 -43.7L217.7 -41.3Q218.4 -42.4 219.3 -43.6Q220.2 -44.8 221.65 -45.9Q223.1 -47 225.2 -47.75Q227.3 -48.5 230.2 -48.5Q231.6 -48.5 232.95 -48.25Q234.3 -48 235.6 -47.55Q236.9 -47.1 237.9 -46.4Q238.9 -45.7 239.45 -44.85Q240 -44 240 -42.9Q240 -40.2 238.5 -38.35Q237 -36.5 235.2 -36.5Q233.8 -36.5 233.15 -36.8Q232.5 -37.1 232 -37.5Q231.5 -37.9 230.55 -38.2Q229.6 -38.5 227.6 -38.5Q226.1 -38.5 224.5 -37.95Q222.9 -37.4 221.55 -36.35Q220.2 -35.3 219.3 -33.65Q218.4 -32 218.4 -29.7V-4.2Q218.4 -2.7 218.1 -1.5Q217.8 -0.3 216.7 0.35Q215.6 1 213.1 1Z M357.51 1.6Q351.21 1.6 346.41 -0.45Q341.61 -2.5 338.41 -6.05Q335.21 -9.6 333.51 -14.15Q331.81 -18.7 331.81 -23.7Q331.81 -30.8 335.06 -36.3Q338.31 -41.8 344.06 -44.95Q349.81 -48.1 357.21 -48.1Q362.41 -48.1 366.46 -46.5Q370.51 -44.9 373.31 -42.25Q376.11 -39.6 377.56 -36.35Q379.01 -33.1 379.01 -29.9Q379.01 -24.7 376.56 -22.45Q374.11 -20.2 370.41 -20.2H342.71Q342.81 -16.3 345.06 -13.5Q347.31 -10.7 350.71 -9.2Q354.11 -7.7 357.71 -7.7Q360.31 -7.7 362.31 -7.95Q364.31 -8.2 365.76 -8.7Q367.21 -9.2 368.26 -9.7Q369.31 -10.2 370.21 -10.65Q371.11 -11.1 371.91 -11.3Q372.91 -11.4 373.86 -10.9Q374.81 -10.4 375.51 -9.2Q376.01 -8.3 376.26 -7.5Q376.51 -6.7 376.51 -5.9Q376.51 -4.2 374.11 -2.5Q371.71 -0.8 367.41 0.4Q363.11 1.6 357.51 1.6ZM342.71 -26.8H365.61Q367.31 -26.8 368.26 -27.3Q369.21 -27.8 369.21 -29.8Q369.21 -32.3 367.66 -34.35Q366.11 -36.4 363.41 -37.65Q360.71 -38.9 357.21 -38.9Q353.21 -38.9 349.86 -37.3Q346.51 -35.7 344.61 -32.95Q342.71 -30.2 342.71 -26.8Z M406.41 1.2Q404.61 1.2 403.36 0.6Q402.11 0 401.41 -1.4L383.01 -40.6Q381.71 -43.3 382.36 -44.85Q383.01 -46.4 385.51 -47.6Q388.01 -48.9 389.66 -48.45Q391.31 -48 392.51 -45.3L406.41 -12.2L420.21 -44.5Q421.41 -47.3 422.96 -48.2Q424.51 -49.1 427.61 -47.6Q430.71 -46.1 430.81 -44.25Q430.91 -42.4 429.81 -40.1L411.51 -1.5Q410.91 -0.1 409.66 0.55Q408.41 1.2 406.41 1.2Z"/>
+      <path class="lambda" id="lambda" d="M310.84 1.34Q306.25 1.34 304.29 -2.35Q302.33 -6.05 302.33 -12.43Q302.33 -17.02 302.72 -21.17Q303.12 -25.31 303.68 -30.24Q304.24 -35.17 304.63 -41.89Q305.02 -48.61 305.02 -58.46Q305.02 -64.06 303.34 -67.2Q301.66 -70.34 298.08 -70.34Q295.28 -70.34 293.2 -69.44Q291.13 -68.54 288.89 -66.53L286.54 -68.21Q288.33 -71.34 290.57 -73.75Q292.81 -76.16 295.67 -77.56Q298.52 -78.96 302 -78.96Q306.03 -78.96 307.82 -76.66Q309.61 -74.37 310 -70.67Q310.4 -66.98 310.4 -62.5Q310.4 -55.66 310.06 -49.17Q309.72 -42.67 309.33 -36.4Q308.94 -30.13 308.94 -23.97Q308.94 -16.91 310.45 -12.26Q311.96 -7.62 315.55 -7.62Q317.79 -7.62 319.69 -8.46Q321.6 -9.3 323.72 -11.54L325.63 -9.74Q323.95 -6.61 321.54 -4.09Q319.13 -1.57 316.39 -0.11Q313.64 1.34 310.84 1.34ZM278.48 0H267.28V-1.79Q273.21 -9.86 279.93 -18.93Q286.65 -28 293.37 -37.02Q300.09 -46.03 305.92 -53.87L306.59 -41.89H304.12Q303.12 -40.43 300.76 -36.79Q298.41 -33.15 295.44 -28.28Q292.48 -23.41 289.28 -18.14Q286.09 -12.88 283.24 -8.12Q280.38 -3.36 278.48 0Z" role="button" tabindex="0" aria-label="Change the color of the lambda"/>
+    </svg>
+    <h1 class="name">Nofar Lev</h1>
+    <p class="line"><span id="typed" data-text="Computer science student, language model tinkerer, EMT."></span><span class="cursor" aria-hidden="true"></span></p>
+    <p class="hint">The λ is the L in Lev. Click it and it changes color.</p>
+  </header>
+
+  <!-- The rest of the page (about, interests, work, contact) goes here.
+       Copy everything between the same two points in full-page.html when the content is ready.
+       The styles for it are already in this file, so it will work as soon as it is pasted in.
+
+       Until then, one line with an email address is enough to make the page useful to a recruiter:
+       <p class="hint"><a href="mailto:YOUR-ADDRESS">YOUR-ADDRESS</a></p>
+  -->
+</main>
+
+<script>
+// The lambda's color is the one part of the logo that may change. These are the approved
+// accents for the navy ground: each is the warm-leaning shade of its hue, and none is purple.
+// Ordered so that each click is an obvious change: neighbours are far apart on the color wheel.
+var accents = ['#22d3ee', '#b6f23c', '#45b8ff', '#ffd43b', '#3ce6a8', '#ff8a8a'];
+var current = 0;
+var lambda = document.getElementById('lambda');
+function nextAccent() {
+  current = (current + 1) % accents.length;
+  document.documentElement.style.setProperty('--accent', accents[current]);
+}
+lambda.addEventListener('click', nextAccent);
+lambda.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nextAccent(); }
+});
+
+// Type the line once on load. With reduced motion, show it at once.
+var typed = document.getElementById('typed');
+var text = typed.dataset.text;
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  typed.textContent = text;
+} else {
+  var i = 0;
+  (function tick() {
+    typed.textContent = text.slice(0, ++i);
+    if (i < text.length) setTimeout(tick, 34);
+  })();
+}
+</script>
+</body>
+</html>
