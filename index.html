@@ -89,7 +89,7 @@ ul.plain { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; fle
       <path class="lambda" id="lambda" d="M310.84 1.34Q306.25 1.34 304.29 -2.35Q302.33 -6.05 302.33 -12.43Q302.33 -17.02 302.72 -21.17Q303.12 -25.31 303.68 -30.24Q304.24 -35.17 304.63 -41.89Q305.02 -48.61 305.02 -58.46Q305.02 -64.06 303.34 -67.2Q301.66 -70.34 298.08 -70.34Q295.28 -70.34 293.2 -69.44Q291.13 -68.54 288.89 -66.53L286.54 -68.21Q288.33 -71.34 290.57 -73.75Q292.81 -76.16 295.67 -77.56Q298.52 -78.96 302 -78.96Q306.03 -78.96 307.82 -76.66Q309.61 -74.37 310 -70.67Q310.4 -66.98 310.4 -62.5Q310.4 -55.66 310.06 -49.17Q309.72 -42.67 309.33 -36.4Q308.94 -30.13 308.94 -23.97Q308.94 -16.91 310.45 -12.26Q311.96 -7.62 315.55 -7.62Q317.79 -7.62 319.69 -8.46Q321.6 -9.3 323.72 -11.54L325.63 -9.74Q323.95 -6.61 321.54 -4.09Q319.13 -1.57 316.39 -0.11Q313.64 1.34 310.84 1.34ZM278.48 0H267.28V-1.79Q273.21 -9.86 279.93 -18.93Q286.65 -28 293.37 -37.02Q300.09 -46.03 305.92 -53.87L306.59 -41.89H304.12Q303.12 -40.43 300.76 -36.79Q298.41 -33.15 295.44 -28.28Q292.48 -23.41 289.28 -18.14Q286.09 -12.88 283.24 -8.12Q280.38 -3.36 278.48 0Z" role="button" tabindex="0" aria-label="Change the color of the lambda"/>
     </svg>
     <h1 class="name">Nofar Lev</h1>
-    <p class="line"><span id="typed" data-text="Computer science student, language model tinkerer, EMT."></span><span class="cursor" aria-hidden="true"></span></p>
+    <p class="line"><span id="typed">Computer science student, language model tinkerer, EMT.</span><span class="cursor" aria-hidden="true"></span></p>
     <p class="hint">The λ is the L in Lev. Click it and it changes color.</p>
   </header>
 
@@ -120,10 +120,9 @@ lambda.addEventListener('keydown', function (e) {
 
 // Type the line once on load. With reduced motion, show it at once.
 var typed = document.getElementById('typed');
-var text = typed.dataset.text;
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  typed.textContent = text;
-} else {
+var text = typed.textContent; // the line is in the HTML itself, so it is there even without JavaScript
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  typed.textContent = '';
   var i = 0;
   (function tick() {
     typed.textContent = text.slice(0, ++i);
