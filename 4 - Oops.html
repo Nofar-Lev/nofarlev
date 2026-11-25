@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a short story; plain words, one thing happening per step
+   IDEA: Israa creates a new branch while on the wrong branch, and the merge drags unfinished work into main
+   PICTURE: lines of the list, and with git, boxes that carry each person's change
+   COLOUR and TYPE: light paper ground; green/red changes; Maram orange, Israa pink, GitHub blue; Plex Sans + JetBrains Mono
+   LAYOUT: story text and controls on top, the shared place under it, the two laptops at the bottom */
+:root{color-scheme:light;--bg:#f4f6f9;--card:#fff;--line:#d9e0e8;--ink:#1d2733;--mut:#647487;--blue:#0969da;
+--g:#1a7f37;--gbg:#dcf7e3;--r:#cf222e;--rbg:#ffe9e7;--maram:#7c4dce;--israa:#1f6feb;--nofar:#0b7285;--start:#6c7d90;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;overflow:hidden}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1280px;height:864px;flex:none}
+#layer{position:absolute;inset:0;pointer-events:none}
+.it{position:absolute;z-index:1;transition:left .95s cubic-bezier(.65,0,.3,1),top .95s cubic-bezier(.65,0,.3,1),width .95s cubic-bezier(.65,0,.3,1),height .95s cubic-bezier(.65,0,.3,1),opacity .5s ease,background-color .5s,border-color .5s,color .5s,transform .5s,box-shadow .5s}
+#stage.instant .it{transition:none!important}
+.c-maram{--c:var(--maram)}.c-israa{--c:var(--israa)}.c-start{--c:var(--start)}
+.panel{z-index:0;border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:0 1px 2px rgba(16,24,40,.05),0 6px 18px rgba(16,24,40,.05)}
+.panel.lap{border-top:4px solid var(--c)}
+.panel.gh{border:1.5px solid #b9c3ce}
+.panel.shared{border:1.5px dashed #aab7c5;background:#fbfcfd}
+.ph{position:absolute;left:22px;top:15px;display:flex;align-items:center;gap:10px;font-weight:600;font-size:20px;white-space:nowrap}
+.ph .sub{font-weight:400;font-size:14.5px;color:var(--mut)}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--c)}
+.fhdr{font:500 14px var(--mono);color:var(--mut);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.hlab{font-size:14px;color:var(--mut);white-space:nowrap}
+.ln{display:flex;align-items:center;gap:10px;font:18px/24px var(--mono);padding:0 9px;border-radius:6px;white-space:nowrap;color:#26313d}
+.ln .s{width:11px;flex:none;font-weight:700}
+.ln.add{background:var(--gbg);color:#116329}.ln.add .s{color:var(--g)}
+.ln.del{background:var(--rbg);color:#a1131c}.ln.del .s{color:var(--r)}
+.ln.del .t{text-decoration:line-through}
+.ln.staged::after{content:'in the box';margin-left:auto;font:500 11.5px 'IBM Plex Sans',sans-serif;opacity:.75}
+.ln.arrive{animation:arrive 1.7s ease both}
+.ln.sl{font-size:16px}
+@keyframes arrive{0%{box-shadow:0 0 0 0 rgba(9,105,218,0)}35%{box-shadow:0 0 0 4px rgba(9,105,218,.28)}100%{box-shadow:0 0 0 0 rgba(9,105,218,0)}}
+.box{border:2px dashed #b9c5d2;border-radius:12px;background:#fafbfc}
+.box.full{border:2px solid #6c9bd2;background:#f0f6ff}
+.box .bt{position:absolute;left:13px;top:8px;font-size:13.5px;color:var(--mut)}
+.box .be{position:absolute;left:13px;top:40px;font-size:14.5px;color:#9aa8b6;font-style:italic}
+.cm{border-radius:10px;border:2px solid var(--c);background:color-mix(in srgb,var(--c) 7%,#fff);padding:5px 9px;display:flex;flex-direction:column;justify-content:center;gap:1px;box-shadow:0 2px 0 color-mix(in srgb,var(--c) 30%,transparent);z-index:3;overflow:hidden}
+.cm .bl{font:600 14px/18px var(--mono);white-space:nowrap;flex:none;color:var(--g)}
+.cm .tag{position:absolute;right:7px;bottom:4px;font:500 11px var(--mono);color:var(--c)}
+.cm.start .bl{color:#55667a}
+.note{font-size:15px;line-height:1.4;padding:8px 13px;border-radius:10px;border:1px solid;z-index:4}
+.note.info{border-color:#9cc3f0;background:#eef5ff;color:#0b4a8f}
+.note.warn{border-color:#f5aaa3;background:#fff1f0;color:#a1131c}
+.note.ok{border-color:#9bd7aa;background:#ebfaef;color:#116329}
+.act{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.act .c{font:600 15.5px var(--mono);background:#eef2f6;border:1px solid #d5dde6;color:#1d2733;padding:4px 10px;border-radius:8px}
+.act .c.plain{font-family:'IBM Plex Sans',sans-serif;font-weight:600}
+.act .c.rej{background:#fff1f0;border-color:#f5aaa3;color:#a1131c}
+.act .c.rej::after{content:'  \2715 refused';font-family:'IBM Plex Sans',sans-serif;font-size:13px}
+.doc{z-index:6;border:2px solid #7d8fa3;border-radius:5px;background:#fff repeating-linear-gradient(180deg,transparent 0 7px,#9fb0c2 7px 8.5px) 7px 9px/18px 26px no-repeat;box-shadow:0 8px 18px rgba(16,24,40,.2)}
+.card{z-index:2;border-radius:20px;background:#fff;border:1px solid var(--line);padding:26px 30px;box-shadow:0 1px 2px rgba(16,24,40,.05),0 10px 30px rgba(16,24,40,.07)}
+.card h3{margin:0 0 4px;font-size:24px}
+.card .why{margin:0 0 18px;color:var(--mut);font-size:16px}
+.card .ln{margin-bottom:4px}
+.card.bad{border-top:5px solid var(--r)}.card.good{border-top:5px solid var(--g)}
+.card .verdict{margin-top:18px;font-size:18px;font-weight:600}
+.card.bad .verdict{color:#a1131c}.card.good .verdict{color:#116329}
+.card .row{display:flex;gap:8px;margin-top:16px}
+.card .row .cm{position:relative;height:58px;width:118px}
+.card .row .cm.start{width:118px}
+.blab{font:600 14px var(--mono);color:var(--mut);display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--line);background:#f6f8fa;white-space:nowrap}
+.blab.head{color:var(--maram);border-color:var(--maram);background:color-mix(in srgb,var(--maram) 8%,#fff)}
+.bchip{font:500 15px var(--mono);padding:4px 12px;border-radius:999px;border:1.5px solid var(--c);color:var(--c);background:#fff;white-space:nowrap}
+.bchip b{font-weight:700}
+.cm .bl.d{color:var(--r)}
+.bframe{z-index:1;border:1.5px dashed #c3ccd6;border-radius:14px;background:#f7f9fb}
+.bframe.on{border:2px solid #8e9cab;background:#fff;box-shadow:0 2px 8px rgba(16,24,40,.08)}
+.blab{z-index:2}
+.panel.phone{border:2px solid #c9d2dc;border-radius:30px;border-top:5px solid var(--c)}
+.panel.phone .ph{font-size:17px;top:16px;left:20px}
+.cart{font-size:16px;font-weight:600;color:#116329;white-space:nowrap}
+.cm.hot{box-shadow:0 0 0 4px rgba(31,111,235,.4),0 0 16px rgba(31,111,235,.35)}
+.ab.look{border-color:#1f6feb;font-size:19px;font-weight:700;color:#1f6feb}
+.ln.mark{background:#e8f1ff;box-shadow:inset 0 0 0 2px #1f6feb}
+.note code{font:600 .9em var(--mono)}
+.tip{z-index:5;background:#fff;border:1.5px solid #1f6feb;border-radius:14px;padding:10px 16px;box-shadow:0 6px 18px rgba(16,24,40,.08);display:flex;flex-direction:column;gap:6px}
+.tip .tr{display:grid;grid-template-columns:300px 1fr;align-items:center;gap:14px;font-size:16px;color:#7a8898;padding:3px 8px;border-radius:8px}
+.tip .tr code{font:600 16px var(--mono);color:#7a8898}
+.tip .tr.on{background:#e8f1ff;color:var(--ink)}.tip .tr.on code{color:#0b4a8f}
+.tip .rule{font-size:20px;font-weight:700;color:#a1131c;padding:6px 8px}
+.tip .rule.sm{font-size:16px;padding:2px 8px}
+.ab.look.warn{border-color:var(--r);color:#a1131c}
+.storycard{z-index:0;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06)}
+.storycard .sth{position:absolute;left:32px;top:20px;font-size:15px;font-weight:600;color:var(--mut)}
+.srow{z-index:2;display:flex;align-items:center;gap:16px;padding:0 18px;border-radius:14px;border:1.5px solid transparent;font-size:18.5px;line-height:1.4;color:#3b4756}
+.srow.cur{background:#f2f7ff;border-color:#9cc3f0;color:var(--ink)}
+.srow .sn{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#e9eef4;color:var(--mut);font:600 14px var(--mono)}
+.srow.cur .sn{background:var(--blue);color:#fff}
+.srow .sw{flex:none;width:68px;font-weight:700;color:var(--c)}
+.srow .stx code{font:600 .88em var(--mono);background:#eef2f6;padding:1px 6px;border-radius:5px}
+.sq{z-index:2;display:flex;align-items:center;padding:0 22px;border-radius:14px;background:#fff1f0;border:1.5px solid #f5aaa3;color:#a1131c;font-size:22px;font-weight:700}
+.cover{z-index:8;border-radius:12px;background:repeating-linear-gradient(135deg,#eef1f5 0 14px,#e6eaf0 14px 28px);border:1.5px dashed #b9c3ce;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#7a8898}
+.cart.oops{color:#a1131c}
+.bub{font-size:15px;line-height:1.38;padding:9px 13px;border-radius:16px 16px 4px 16px;background:var(--c);color:#fff;font-weight:500}
+.bchip.hot{box-shadow:0 0 0 4px rgba(31,111,235,.35),0 0 16px rgba(31,111,235,.35)}
+.tip .rule code{font:600 .9em var(--mono)}
+.cart.no{color:#a1131c;font-weight:500}
+.c-nofar{--c:var(--nofar)}
+.ab .gb{background:#1f883d;color:#fff;font-weight:600;font-size:17px;padding:5px 12px;border-radius:7px}
+#top{position:absolute;left:30px;right:30px;top:14px}
+#parts{display:flex;gap:6px;align-items:center}
+.part{height:34px;padding:0 13px;border-radius:9px;font:500 14px 'IBM Plex Sans',sans-serif;color:var(--mut);background:transparent;border:1px solid transparent;cursor:pointer;display:flex;align-items:center;gap:8px}
+.part .n{font:600 12px var(--mono);width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#e3e8ee;color:var(--mut)}
+.part:hover{color:var(--ink)}
+.part.cur{color:var(--ink);background:#fff;border-color:var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06)}.part.cur .n{background:var(--blue);color:#fff}
+.part.done .n{background:#b6d3f2;color:#0b4a8f}
+#dots{position:absolute;right:0;top:10px;display:flex;gap:6px;align-items:center;font-size:13.5px;color:var(--mut)}
+#dots span{margin-right:8px}
+.dt{width:9px;height:9px;border-radius:50%;background:#d3dbe4}.dt.done{background:#8db7e6}.dt.cur{background:var(--blue)}
+#cap{position:absolute;left:32px;top:116px;width:850px;height:62px;font-size:20px;line-height:1.42;transition:opacity .25s;text-wrap:pretty}
+#action{position:absolute;left:30px;top:60px;height:46px;display:flex;gap:12px;align-items:center;transition:opacity .25s}
+.ab{display:flex;align-items:center;gap:10px;height:46px;padding:0 16px 0 12px;border-radius:12px;background:#fff;border:2px solid var(--c);box-shadow:0 2px 0 color-mix(in srgb,var(--c) 25%,transparent)}
+.ab .who{font-weight:700;font-size:19px;color:var(--c)}
+.ab code{font:600 20px var(--mono);color:var(--ink)}
+.ab .pl{font-size:19px;font-weight:500}
+.ab.rej code{color:#a1131c;text-decoration:line-through;text-decoration-thickness:2px}
+.ab .no{font-size:15px;font-weight:700;color:#fff;background:var(--r);padding:3px 9px;border-radius:7px}
+#cap code{font:600 .84em var(--mono);background:#e8edf3;padding:1px 7px;border-radius:6px}
+#cap .g{color:var(--g);font-weight:600}#cap .r{color:var(--r);font-weight:600}
+#ctl{position:absolute;right:30px;top:60px;display:flex;gap:10px}
+button{font:600 16px 'IBM Plex Sans',system-ui,sans-serif;color:var(--ink);background:#fff;border:1px solid #cdd6e0;border-radius:12px;height:50px;padding:0 18px;cursor:pointer}
+button:hover{background:#f0f3f7}
+button:focus-visible{outline:3px solid #8cc0ff;outline-offset:2px}
+button:disabled{opacity:.4;cursor:default}
+#next{background:var(--blue);border-color:var(--blue);color:#fff;padding:0 26px;min-width:120px}
+#next:hover{background:#0a5cc0}
+#narrow{display:none;position:fixed;left:0;right:0;top:0;z-index:50;background:#e7f0fb;color:#0b4a8f;font-size:14px;padding:10px 16px;text-align:center}
+@media (max-width:760px){#narrow{display:block}}
+@media (prefers-reduced-motion:reduce){.it{transition-duration:.01s!important}.ln.arrive{animation:none}}
+</style>
+</head>
+<body>
+<div id="narrow">Made for a computer screen. For the best view, open it full-window on a laptop.</div>
+<div id="wrap"><div id="stage">
+  <div id="top"><div id="parts"></div><div id="dots"></div></div>
+  <div id="action"></div>
+  <div id="cap"></div>
+  <div id="ctl"><button id="prev" type="button">← Back</button><button id="replay" type="button" title="Play this step again">↻</button><button id="next" type="button">Next →</button></div>
+  <div id="layer"></div>
+</div></div>
+<script>
+{
+const ORDER=['7 pizzas','cake','cucumbers','lettuce'];
+const C={st:{who:'start',add:[]},f1:{who:'maram',add:['7 pizzas','cake']},s1:{who:'maram',add:['cucumbers','lettuce']}};
+const NAMES={maram:'Maram',israa:'Israa',nofar:'Nofar'};
+const DOC='<svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1h6.5L11 4.5V13H1z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+const CLOUD='<svg width="28" height="20" viewBox="0 0 24 17" aria-hidden="true"><path d="M6.5 16h11.5a4.6 4.6 0 0 0 .5-9.2A6.3 6.3 0 0 0 6.6 5.4 5.3 5.3 0 0 0 6.5 16z" fill="#eef1f4" stroke="#24292f" stroke-width="1.6"/></svg>';
+const LAP='maram';
+const contentOf=ids=>{const s=new Set();for(const id of ids){(C[id].add||[]).forEach(x=>s.add(x));(C[id].del||[]).forEach(x=>s.delete(x));}return s;};
+const M=w=>w.lap;
+function edit(w,a=[]){M(w).wadd.push(...a);}
+function add(w){const l=M(w);l.sadd=[...l.wadd];}
+function commit(w,id){const l=M(w);l.br[l.branch].push(id);l.wadd=[];l.sadd=[];}
+function push(w){const l=M(w);w.gh[l.branch]=[...l.br[l.branch]];if(!w.ghShow.includes(l.branch))w.ghShow.push(l.branch);}
+function branch(w,b){const l=M(w);l.br[b]=[...l.br[l.branch]];l.branch=b;if(!l.show.includes(b))l.show.push(b);}
+function checkout(w,b){const l=M(w);if(!l.br[b])l.br[b]=[...w.gh[b]];l.branch=b;if(!l.show.includes(b))l.show.push(b);}
+function merge(w,src){for(const c of w.gh[src])if(!w.gh.main.includes(c))w.gh.main.push(c);}
+function look(w,n,hl){const p=w.phones[n];p.view=ORDER.filter(x=>contentOf(w.gh.main).has(x));p.hl=hl||[];}
+
+const PARTS=['Planning the party','Salad for tonight','What really happened','How to avoid it'];
+const ph0=()=>({israa:{view:null,cart:[],hl:[],msgs:[],bag:null},nofar:{view:null,cart:[],hl:[],msgs:[],bag:null}});
+const init={gh:{main:['st']},ghShow:['main'],lap:{branch:'main',br:{main:['st']},show:['main'],wadd:[],sadd:[]},phones:ph0()};
+const init2={gh:{main:['st']},ghShow:['main'],lap:{branch:'party',br:{main:['st'],party:['st','f1']},show:['main','party'],wadd:[],sadd:[]},phones:ph0()};
+const HID=['gh','maram'];
+const S=[
+/* ---- part 1: planning the party, everything visible ---- */
+{p:0,init,focus:['maram'],cap:`Team 13's shopping list is on GitHub. Right now it's empty. Maram is planning the team's birthday party, which is <b>next month</b>.`},
+{p:0,focus:['maram'],acts:{maram:[['git checkout -b party']]},run:w=>branch(w,'party'),from:['maram:main:'],
+ cap:`She makes a branch for her plan: <code>party</code>.`},
+{p:0,focus:['maram'],acts:{maram:[['adds party food','plain']]},run:w=>edit(w,['7 pizzas','cake']),
+ cap:`She adds <span class="g">7 pizzas</span> and a <span class="g">cake</span>.`},
+{p:0,focus:['maram'],acts:{maram:[['git add']]},run:add,cap:`She puts them in the box…`},
+{p:0,focus:['maram'],acts:{maram:[['git commit']]},run:w=>commit(w,'f1'),commit:['f1'],
+ cap:`…and commits. The plan is saved on <code>party</code>. It's for next month, so nothing should be bought yet.`},
+/* ---- part 2: the salad, screens hidden ---- */
+{p:1,cap:`In the next steps, we'll <b>hide the screens</b> and just follow the story. Try to guess what's happening behind them.`},
+{p:1,cover:HID,acts:{maram:[['git checkout -b salad']]},run:w=>branch(w,'salad'),
+ cap:`Then Maram remembers: she wanted to make a salad <b>tonight</b>! She runs <code>git checkout -b salad</code> to create the new branch and switch to it.`},
+{p:1,cover:HID,acts:{maram:[['adds salad stuff','plain'],['git add'],['git commit']]},run:w=>{edit(w,['cucumbers','lettuce']);add(w);commit(w,'s1');},
+ cap:`She adds cucumbers and lettuce, puts them in the box, and commits.`},
+{p:1,cover:HID,acts:{maram:[['git push'],['Merge pull request','gh']]},run:w=>{push(w);merge(w,'salad');},
+ cap:`She pushes, and merges <code>salad</code> into <code>main</code>.`},
+{p:1,cover:HID,focus:['maram','israa'],acts:{maram:[['sends a message','plain']]},run:w=>{w.phones.israa.msgs=[{to:'From Maram',t:'I updated main with the salad stuff. It’s for tonight, can you go shopping? It’s urgent!',c:'maram'}];},
+ cap:`It's for tonight, so she messages Israa: <b>“I updated main. Can you go shopping? It's urgent!”</b>`},
+{p:1,cover:HID,focus:['israa'],acts:{israa:[['goes shopping','plain']]},run:w=>{w.phones.israa.msgs=[];w.phones.israa.bag=['cucumbers','lettuce','7 pizzas','cake'];},
+ cap:`Israa buys everything on <code>main</code> and comes back with cucumbers and lettuce… and <b>7 pizzas and a cake</b>.`},
+{p:1,cover:HID,look:'What went wrong?',
+ cap:`Maram only merged the <code>salad</code> branch into <code>main</code>. So why did Israa buy next month's party food? Think about it, then press Next to look at the screens.`},
+/* ---- part 3: the same thing, screens visible ---- */
+{p:2,init:init2,focus:['maram'],
+ cap:`Let's go back to the moment Maram remembered the salad, and this time watch the screens. Notice: she's still on <code>party</code>.`},
+{p:2,focus:['maram'],acts:{maram:[['git checkout -b salad']]},run:w=>branch(w,'salad'),from:['maram:party:'],
+ cap:`When she creates the <code>salad</code> branch… she was on the <code>party</code> branch.`},
+{p:2,look:true,focus:['maram'],markBox:['f1'],lit:['party','salad'],
+ cap:`<b>Here's the mistake.</b> A new branch starts as <b>a copy of the branch you're on</b>. So <code>salad</code> started with the party food in it.`},
+{p:2,focus:['maram'],acts:{maram:[['adds salad stuff','plain'],['git add'],['git commit']]},run:w=>{edit(w,['cucumbers','lettuce']);add(w);commit(w,'s1');},commit:['s1'],markBox:['f1'],
+ cap:`She adds cucumbers and lettuce, and commits them on top.`},
+{p:2,focus:['gh','maram'],gh:['salad'],acts:{maram:[['git push']]},run:push,from:['maram:salad:'],markBox:['f1'],
+ cap:`She pushes. Look at <code>salad</code> on GitHub: the party food box is in there.`},
+{p:2,focus:['gh','maram'],gh:['main','salad'],acts:{maram:[['Merge pull request','gh']]},run:w=>merge(w,'salad'),from:['gh:salad:'],flash:true,ghDelay:950,markBox:['f1'],
+ cap:`So when she merges <code>salad</code> into <code>main</code>, both boxes come along: tonight's salad, and next month's party food.`},
+/* ---- part 4: rewind, the full process done right ---- */
+{p:3,look:'Rewind',hypo:true,focus:['maram'],run:w=>{Object.assign(w,structuredClone(init2));},
+ cap:`Let's rewind to the moment Maram remembered the salad. She's on the <code>party</code> branch. What should she do?`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['maram'],acts:{maram:[['git checkout main']]},run:w=>checkout(w,'main'),
+ cap:`First, she switches to <code>main</code>. The party food disappears from her screen: it's safe on <code>party</code>.`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['maram'],acts:{maram:[['git checkout -b salad']]},run:w=>branch(w,'salad'),from:['maram:main:'],
+ cap:`Now she creates <code>salad</code>. It's a copy of <code>main</code>, so it starts empty: no pizzas, no cake.`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['maram'],acts:{maram:[['adds salad stuff','plain']]},run:w=>edit(w,['cucumbers','lettuce']),
+ cap:`She adds <span class="g">cucumbers</span> and <span class="g">lettuce</span>…`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['maram'],acts:{maram:[['git add']]},run:add,cap:`…puts them in the box…`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['maram'],acts:{maram:[['git commit']]},run:w=>commit(w,'s1'),commit:['s1'],cap:`…commits…`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['gh','maram'],gh:['salad'],acts:{maram:[['git push']]},run:push,from:['maram:salad:'],cap:`…and pushes.`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['gh','maram'],gh:['main','salad'],acts:{maram:[['Merge pull request','gh']]},run:w=>merge(w,'salad'),from:['gh:salad:'],flash:true,ghDelay:950,
+ cap:`She merges <code>salad</code> into <code>main</code>. This time, only the salad box comes along.`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['maram','israa'],acts:{maram:[['sends a message','plain']]},run:w=>{w.phones.israa.msgs=[{to:'From Maram',t:'I updated main with the salad stuff. It’s for tonight, can you go shopping? It’s urgent!',c:'maram'}];},
+ cap:`She messages Israa, just like before.`},
+{p:3,look:'Rewind',hypo:true,chain:true,focus:['gh','israa'],acts:{israa:[['goes shopping','plain']]},run:w=>{w.phones.israa.msgs=[];w.phones.israa.bag=['cucumbers','lettuce'];},
+ cap:`Israa comes back with cucumbers and lettuce, and nothing else. The party plan waits on <code>party</code> until next month.`},
+{p:3,hypo:true,chain:true,tip:'rule',
+ cap:`<b>A new branch starts from the branch you're on. Before <code>git checkout -b</code>, check which branch you're on.</b>`}
+];
+const WS=[];{let w=null;for(const s of S){if(s.hypo){const h=structuredClone(s.chain?WS[WS.length-1]:w);if(s.run)s.run(h);WS.push(h);continue;}w=structuredClone(s.init||w);if(s.run)s.run(w);WS.push(w);}}
+
+/* ---------- layout ---------- */
+const LH=27,G={x:30,y:190,w:1220,h:284},LP={x:30,y:488,w:1004,h:364},PH={israa:{x:1050,y:488,w:200,h:364}};
+function rowsFor(cur,o={}){const A=o.add||new Set(),St=o.st||new Set(),FA=o.fa||new Set();
+ return ORDER.filter(l=>cur.has(l)||A.has(l)).map(l=>{let c=A.has(l)?'add':FA.has(l)?'add arrive':'';if(St.has(l))c+=' staged';return{lid:l,cls:c};});}
+function fileItems(out,loc,rows,x,y,w,delay){if(!rows.length){out.push({key:`${loc}:empty`,cls:'empty',x:x+9,y,w,h:25,html:'(empty list)',delay,loc});return;}rows.forEach((r,k)=>{const sg=r.cls.includes('add')?'+':'';out.push({key:`${loc}:ln:${r.lid}`,cls:'ln '+r.cls,x,y:y+k*LH,w,h:25,html:`<span class="s">${sg}</span><span class="t">${r.lid}</span>`,delay,lid:r.lid,loc});});}
+function noteItems(out,s,loc,x,y,w){let yy=y;(s.notes||[]).filter(n=>n.at===loc).forEach(n=>{const plain=n.t.replace(/<[^>]+>/g,'');out.push({key:`nt:${loc}:${plain}`,cls:'note '+(n.tone||'info'),x,y:yy,w,html:n.t,delay:n.d??700,loc});yy+=Math.ceil(plain.length/(w/8.2))*21+22;});}
+const boxHTML=id=>id==='st'?'<div class="bl">empty list</div>':(C[id].add||[]).map(x=>`<div class="bl">+ ${x}</div>`).join('');
+const boxH=id=>id==='st'?40:(C[id].add||[]).length*18+14;
+function branchRow(out,loc,b,ids,x,y,w,s,active,headCls){
+ const fade=!active;
+ out.push({key:`${loc}:frame:${b}`,cls:'bframe'+(active?' on':''),x,y,w,h:58,loc,fade,html:''});
+ out.push({key:`${loc}:lab:${b}`,cls:'blab'+(headCls||''),x:x+8,y:y+14,w:112,h:30,loc,fade,html:b});
+ let xx=x+128;for(const id of ids){
+  out.push({key:`${loc}:${b}:${id}`,cls:`cm c-${C[id].who}${id==='st'?' start':''}${(s.markBox||[]).includes(id)?' hot':''}`,x:xx,y:y+(58-boxH(id))/2,w:112,h:boxH(id),html:boxHTML(id),cid:id,loc,fade,spawnFrom:(s.commit||[]).includes(id)&&loc!=='gh'?`${loc}:box`:undefined});xx+=118;}}
+const STORY=[
+ ['maram',`Maram is planning team 13's birthday party for <b>next month</b>, on a branch called <code>party</code>: 7 pizzas and a cake. It's only a plan, so nothing should be bought yet.`],
+ ['maram',`This week she also wants to make a salad, so she creates a new branch for it: <code>salad</code>.`],
+ ['maram',`She adds cucumbers and lettuce, then adds, commits and pushes them.`],
+ ['maram',`The salad list is ready, so she merges <code>salad</code> into <code>main</code>.`],
+ ['maram',`She messages Israa: <i>“The salad stuff is on main. Can you buy it?”</i>`],
+ ['israa',`Israa checks <code>main</code> and buys everything on it.`],
+ ['nofar',`Nofar: <i>“Why are there 7 pizzas and a cake in the fridge?! The party is next month!”</i>`]];
+function storyItems(s){const out=[];
+ out.push({key:'story:card',cls:'storycard',x:30,y:190,w:1220,h:660,html:`<div class="sth">What happened</div>`});
+ for(let k=0;k<s.story;k++){const [who,t]=STORY[k];const cur=k===s.story-1&&!s.q;
+  out.push({key:'story:'+k,cls:'srow'+(cur?' cur':''),x:62,y:240+k*72,w:1156,h:64,html:`<span class="sn">${k+1}</span><span class="sw c-${who}">${NAMES[who]}</span><span class="stx">${t}</span>`,delay:cur?150:0});}
+ if(s.q)out.push({key:'story:q',cls:'sq',x:62,y:240+s.story*72+10,w:1156,h:56,html:'What went wrong?',delay:300});
+ return out;}
+function buildItems(i){
+ const s=S[i],w=WS[i],pw=i>0?WS[i-1]:null,out=[];
+ if(s.story)return storyItems(s);
+ out.push({key:'gh:panel',cls:'panel gh',...G,loc:'gh',html:`<div class="ph">${CLOUD}GitHub <span class="sub">team 13’s shared list</span></div>`});
+ out.push({key:'gh:fh',cls:'fhdr',x:G.x+24,y:G.y+60,w:260,h:20,loc:'gh',html:`${DOC}shopping-list.txt on <b>main</b>`});
+ const cur=contentOf(w.gh.main);let fa;
+ if(s.flash&&pw){const prev=contentOf(pw.gh.main);fa=new Set([...cur].filter(x=>!prev.has(x)));}
+ fileItems(out,'gh',rowsFor(cur,{fa}),G.x+20,G.y+88,250,s.ghDelay||0);
+ const gact=s.gh||['main'];
+ if(!s.hide){out.push({key:'gh:hl',cls:'hlab',x:G.x+316,y:G.y+60,w:300,h:20,loc:'gh',html:'Branches on GitHub'});
+ w.ghShow.forEach((b,k)=>branchRow(out,'gh',b,w.gh[b],G.x+316,G.y+84+k*64,G.w-340,s,gact.includes(b)));}
+ noteItems(out,s,'gh',G.x+G.w-560,G.y+10,536);
+ /* Maram's laptop */
+ const P=LP,l=w.lap;
+ out.push({key:'maram:panel',cls:'panel lap c-maram',...P,loc:'maram',html:`<div class="ph"><span class="dot"></span>Maram’s laptop</div>`});
+ out.push({key:'maram:on',cls:'bchip c-maram',x:P.x+214,y:P.y+15,loc:'maram',html:`on <b>${l.branch}</b>`});
+ out.push({key:'maram:fh',cls:'fhdr',x:P.x+24,y:P.y+62,w:200,h:20,loc:'maram',html:`${DOC}shopping-list.txt`});
+ fileItems(out,'maram',rowsFor(contentOf(l.br[l.branch]),{add:new Set(l.wadd),st:new Set(l.sadd)}),P.x+20,P.y+90,240,0);
+ const bx=P.x+290,by=P.y+56;
+ out.push({key:'maram:box',cls:'box'+(l.sadd.length?' full':''),x:bx,y:by,w:P.w-310,h:84,loc:'maram',html:`<span class="bt">The box (next commit)</span>${l.sadd.length?'':'<span class="be" style="top:34px">empty</span>'}`});
+ l.sadd.forEach((lid,k)=>out.push({key:`maram:sl:${lid}`,cls:'ln sl add',x:bx+12+k*160,y:by+36,w:150,h:25,loc:'maram',html:`<span class="s">+</span><span class="t">${lid}</span>`,spawnFrom:`maram:ln:${lid}`}));
+ if(!s.hide){out.push({key:'maram:hl',cls:'hlab',x:bx,y:P.y+150,w:300,h:20,loc:'maram',html:'Branches on this laptop'});
+ l.show.forEach((b,k)=>branchRow(out,'maram',b,l.br[b],bx,P.y+172+k*64,P.w-310,s,b===l.branch||(s.lit||[]).includes(b),b===l.branch?' head':''));}
+ noteItems(out,s,'maram',P.x+20,P.y+262,250);
+ /* phones */
+ for(const n of ['israa']){const Q=PH[n],p=w.phones[n];
+  out.push({key:n+':panel',cls:`panel phone c-${n}`,...Q,loc:n,html:`<div class="ph"><span class="dot"></span>${NAMES[n]}’s phone</div>`});
+  let qy=Q.y+58;
+  p.msgs.forEach((m,k)=>{out.push({key:`${n}:to:${k}`,cls:'hlab',x:Q.x+18,y:qy,w:170,h:18,loc:n,html:m.to,delay:300});out.push({key:`${n}:msg:${k}`,cls:`bub c-${m.c||n}`,x:Q.x+18,y:qy+22,w:Q.w-36,loc:n,html:m.t,delay:300});qy+=n==='israa'?112:160;});
+  if(p.bag){out.push({key:n+':bt',cls:'hlab',x:Q.x+18,y:qy,w:170,h:18,loc:n,html:'Back from the shop with:',delay:300});p.bag.forEach((x,k)=>out.push({key:`${n}:bag:${x}`,cls:'cart'+(x==='7 pizzas'||x==='cake'?' oops':''),x:Q.x+18,y:qy+26+k*28,w:170,h:24,loc:n,html:`\u2713 ${x}`,delay:500+k*150}));continue;}
+  if(!p.view){if(!p.msgs.length)out.push({key:n+':idle',cls:'empty',x:Q.x+18,y:qy+4,w:170,h:44,loc:n,html:'Nothing yet'});continue;}
+  out.push({key:n+':fh',cls:'fhdr',x:Q.x+18,y:qy,w:170,h:20,loc:n,html:`GitHub · <b>main</b>`});
+  p.view.forEach((x,k)=>out.push({key:`${n}:ln:${x}`,cls:'ln'+(p.hl.includes(x)?' add arrive':''),x:Q.x+12,y:qy+26+k*25,w:Q.w-24,h:25,loc:n,html:`<span class="s">${p.hl.includes(x)?'+':''}</span><span class="t">${x}</span>`,delay:300}));
+  const cy=qy+26+p.view.length*25+8;
+  if(p.cart.length)out.push({key:n+':ct',cls:'cart',x:Q.x+18,y:cy,w:170,h:22,loc:n,html:`✓ Bought it all`,delay:900});
+ }
+ if(s.cover){const R={gh:G,maram:LP};for(let j=out.length-1;j>=0;j--){const it=out[j];if(s.cover.includes(it.loc)&&!it.key.endsWith(':panel'))out.splice(j,1);}
+  for(const c of s.cover){const r=R[c];out.push({key:'cover:'+c,cls:'cover',x:r.x+14,y:r.y+50,w:r.w-28,h:r.h-64,loc:c,html:'Hidden for now'});}}
+ tipItems(out,s);
+ const f=s.focus?new Set(s.focus):null;for(const it of out)it.dim=!!(f&&it.loc&&!f.has(it.loc));
+ return out;
+}
+function tipItems(out,s){if(!s.tip)return;out.push({key:'tip:rule',cls:'tip',x:G.x+G.w-640,y:G.y+8,w:616,html:`<div class="rule" style="font-size:17px">Check which branch you’re on before <code>git checkout -b</code>.</div>`,delay:400});}
+
+/* ---------- renderer ---------- */
+const stageEl=document.getElementById('stage'),layer=document.getElementById('layer'),dom=new Map();
+const rectOf=el=>({x:parseFloat(el.style.left),y:parseFloat(el.style.top),w:el.offsetWidth,h:el.offsetHeight});
+function setRect(el,r){el.style.left=r.x+'px';el.style.top=r.y+'px';el.style.width=r.w!=null?r.w+'px':'';el.style.height=r.h!=null?r.h+'px':'';}
+function findSpawn(it,s){
+ if(it.spawnFrom&&dom.has(it.spawnFrom))return rectOf(dom.get(it.spawnFrom));
+ if(it.cid){const c=[...dom.entries()].filter(([,e])=>e.dataset.cid===it.cid);if(c.length){for(const p of s.from||[]){const f=c.find(([k])=>k.startsWith(p));if(f)return rectOf(f[1]);}return rectOf(c[0][1]);}}
+ return null;}
+function paint(el,it){el.className='it '+it.cls;if(el._h!==it.html){el.innerHTML=it.html;el._h=it.html;}el.dataset.cid=it.cid||'';}
+const op=it=>(it.dim?.38:1)*(it.fade?.4:1);
+function render(idx,anim){
+ const items=buildItems(idx),s=S[idx],keys=new Set(items.map(i=>i.key)),spawns=new Map();
+ if(anim)for(const it of items)if(!dom.has(it.key)){const r=findSpawn(it,s);if(r)spawns.set(it.key,r);}
+ for(const [k,el] of [...dom]){if(keys.has(k))continue;dom.delete(k);if(anim){el.style.transitionDelay='0ms';el.style.opacity=0;setTimeout(()=>el.remove(),600);}else el.remove();}
+ if(!anim)stageEl.classList.add('instant');
+ const fresh=[];
+ for(const it of items){
+  if(it.transient&&!anim)continue;
+  let el=dom.get(it.key);const d=anim?(it.delay||0)+'ms':'0ms';
+  if(!el){el=document.createElement('div');paint(el,it);el.style.transition='none';const sp=spawns.get(it.key);
+   if(sp){setRect(el,it.posOnly?{x:sp.x,y:sp.y,w:it.w,h:it.h}:sp);el.style.opacity=1;}
+   else{setRect(el,it);el.style.opacity=anim?0:op(it);if(anim)el.style.transform='scale(.97)';}
+   layer.appendChild(el);dom.set(it.key,el);fresh.push([el,it]);}
+  else{paint(el,it);el.style.transitionDelay=d;el.style.animationDelay=d;setRect(el,it);el.style.opacity=op(it);}
+ }
+ layer.offsetWidth;
+ for(const [el,it] of fresh){el.style.transition='';const d=anim?(it.delay||0)+'ms':'0ms';el.style.transitionDelay=d;el.style.animationDelay=d;setRect(el,it);el.style.opacity=op(it);el.style.transform='';
+  if(it.transient){const k=it.key;setTimeout(()=>{el.style.transitionDelay='0ms';el.style.opacity=0;setTimeout(()=>{el.remove();if(dom.get(k)===el)dom.delete(k);},550);},(it.delay||0)+1050);}}
+ if(!anim){layer.offsetWidth;stageEl.classList.remove('instant');}
+}
+
+/* ---------- UI ---------- */
+const actEl=document.getElementById('action'),capEl=document.getElementById('cap'),partsEl=document.getElementById('parts'),dotsEl=document.getElementById('dots');
+const bPrev=document.getElementById('prev'),bNext=document.getElementById('next'),bRe=document.getElementById('replay');
+partsEl.innerHTML=PARTS.map((t,k)=>`<button class="part" type="button" data-p="${k}"><span class="n">${k+1}</span>${t}</button>`).join('');
+const partEls=[...partsEl.children];
+let cur=-1;
+function ui(i,anim){const s=S[i],inPart=S.map((x,k)=>[x,k]).filter(([x])=>x.p===s.p),pos=inPart.findIndex(([,k])=>k===i);
+ if(anim){capEl.style.opacity=0;setTimeout(()=>{capEl.innerHTML=s.cap;capEl.style.opacity=1;},200);}else{capEl.innerHTML=s.cap;capEl.style.opacity=1;}
+ actEl.innerHTML=(s.look?(typeof s.look==='string'?`<div class="ab look warn">${s.look}</div>`:'<div class="ab look">Look closely</div>'):'')+Object.entries(s.acts||{}).map(([n,a])=>a.map(([t,k])=>`<div class="ab c-${n}${k==='rej'?' rej':''}"><span class="who">${NAMES[n]}:</span>${k==='plain'?`<span class="pl">${t}</span>`:k==='gh'?`<span class="gb">${t}</span>`:`<code>${t}</code>`}${k==='rej'?'<span class="no">refused</span>':''}</div>`).join('')).join('');
+ partEls.forEach((t,k)=>t.className='part'+(k===s.p?' cur':k<s.p?' done':''));
+ dotsEl.innerHTML=inPart.length>1?`<span>Step ${pos+1} of ${inPart.length}</span>`+inPart.map((_,k)=>`<i class="dt${k<pos?' done':k===pos?' cur':''}"></i>`).join(''):'';
+ bPrev.disabled=i===0;bNext.disabled=i===S.length-1;bRe.disabled=!!S[i].init;
+}
+function go(i,anim){i=Math.max(0,Math.min(S.length-1,i));if(i===cur)return;render(i,anim);cur=i;ui(i,anim);}
+function next(){if(cur<S.length-1)go(cur+1,!S[cur+1].init);}
+function prev(){if(cur>0)go(cur-1,false);}
+function replay(){if(cur<1||S[cur].init)return;const i=cur;render(i-1,false);requestAnimationFrame(()=>render(i,true));}
+bNext.addEventListener('click',next);bPrev.addEventListener('click',prev);bRe.addEventListener('click',replay);
+partsEl.addEventListener('click',e=>{const b=e.target.closest('.part');if(b)go(S.findIndex(s=>s.p===+b.dataset.p),false);});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown'||(e.key===' '&&!(e.target.closest&&e.target.closest('button')))){e.preventDefault();next();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}else if(e.key==='r'||e.key==='R')replay();});
+let tx=null;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(dx<-50)next();else if(dx>50)prev();},{passive:true});
+function fit(){const sc=Math.min(innerWidth/1280,innerHeight/864)*0.985;stageEl.style.transform=`scale(${sc})`;}
+addEventListener('resize',fit);fit();
+go(0,false);
+}
+</script>
+</body>
+</html>
